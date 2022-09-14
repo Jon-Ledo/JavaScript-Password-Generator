@@ -36,7 +36,12 @@ function writePassword() {
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword)
 
-function generatePassword (passwordLength, passwordIncludesLowerCase, passwordIncludesUpperCase, passwordIncludesNumbers, passwordIncludesSpecialChar) {
+function generatePassword (
+  passwordLength, 
+  passwordIncludesLowerCase, 
+  passwordIncludesUpperCase, 
+  passwordIncludesNumbers, 
+  passwordIncludesSpecialChar) {
   // IF PASSWORD LENGTH TOO LOW OR FALSY
   if (!passwordLength || passwordLength < 8) {
     confirm("Password length is too short! Password should be between 8-128 characters. Generate password again")
@@ -48,34 +53,73 @@ function generatePassword (passwordLength, passwordIncludesLowerCase, passwordIn
 
   // BUILD THE ARRAY TO PULL VALUES FROM
   var charactersArray = []
+  var tokensArray = []
   if (passwordIncludesLowerCase) {
     charactersArray = [...lowercaseArray]
+    tokensArray.push({isTrue: true, value: lowercaseArray})
+  } else {
+    tokensArray.push({isTrue: false, value: lowercaseArray})
   }
+
   if (passwordIncludesUpperCase) {
     charactersArray = [...charactersArray, ...uppercaseArray]
+    tokensArray.push({isTrue: true, value: uppercaseArray})
+  } else {
+    tokensArray.push({isTrue: false, value: uppercaseArray})
   }
+
   if (passwordIncludesNumbers) {
     charactersArray = [...charactersArray, ...numbersArray]
+    tokensArray.push({isTrue: true, value: numbersArray})
+  } else {
+    tokensArray.push({isTrue: false, value: numbersArray})
   }
+
   if (passwordIncludesSpecialChar) {
     charactersArray = [...charactersArray, ...specialCharArray]
+    tokensArray.push({isTrue: true, value: specialCharArray})
+  } else {
+    tokensArray.push({isTrue: false, value: specialCharArray})
   }
 
   // IF ALL VALUES ARE FALSY, RESTART
   if (charactersArray.length < 1) {
     confirm("Selectors are missing. Generate password again and please select your password's parameters")
     return
-  } else {
+  } 
+  // IF TRUTHY, LOOP AND GENERATE PASSWORD
+  else {
     for (var i = 0; i < passwordLength; i++) {
       var randomIndex = randomNumber(charactersArray.length - 1)
       generatedPassword.push(charactersArray[randomIndex])
     }
 
-    // return value for pw to appear
+    // CHECK IF PASSWORD INCLUDES ALL OPTIONS
+    var isConditionMet = false 
+    tokensArray.forEach( (token, index) => {
+      // token.isTrue === the option was selected
+      if (token.isTrue) {
+        token.value.forEach(value => {
+          if (generatedPassword.includes(value)) {
+            isConditionMet = true
+          }
+        })
+
+        if (isConditionMet === false) {
+          var newRandomIndex = randomNumber(token.value.length - 1)
+          generatedPassword.splice((-1 - index), 1, token.value[newRandomIndex])
+        } else {
+          isConditionMet = false
+        }
+      } 
+    })
+
+    // return value for password to appear
     generatedPassword = generatedPassword.join("")
     return generatedPassword
   }
 }
+// END OF GENERATE PASSWORD FUNCTION
 
 // FUNCTIONS
 function getUserPrompts () {
