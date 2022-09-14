@@ -6,7 +6,9 @@ A password generator made using HTML, CSS and JavaScript.
 
 After clicking the 'Generate Password' button, the user receives a series of prompts to determine how long the password will be, and what types of characters to be used. Then, using conditional logic, the generated password is printed to the screen where a user can copy it for use.
 
-Multiple functions are created to help keep the code clean and easier to read, by calling them when necessary.
+Multiple functions are created to help keep the code clean and easier to read, by calling them when necessary. Comments are also added in to help break down sections of the function.
+
+A function is also created to help ensure that the final result should have ALL options selected, by splicing a part of the password away, and replacing the character with the one missing.
 
 ## Mock-Up
 
