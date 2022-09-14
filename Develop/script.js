@@ -29,13 +29,13 @@ function generatePassword () {
   // chooose character between 8-128
   var passwordLength = parseInt(prompt("How long would you like this password to be? (number between 8-128)", "8"))
   // choose lower case
-  var passwordIncludesLowerCase = prompt("Include lower case letters? (Y or N)", "Y")
+  var passwordIncludesLowerCase = prompt("Include lower case letters? (Y or N)", "Y").toUpperCase()
   // choose upper case
-  var passwordIncludesUpperCase = prompt("Include upper case letters? (Y or N)", "Y")
+  var passwordIncludesUpperCase = prompt("Include upper case letters? (Y or N)", "Y").toUpperCase()
   // choose numeric
-  var passwordIncludesNumbers = prompt("Include numbers? (Y or N)", "Y")
+  var passwordIncludesNumbers = prompt("Include numbers? (Y or N)", "Y").toUpperCase()
   // choose special characters 
-  var passwordIncludesSpecialChar = prompt("Include special characters? (Y or N", "Y")
+  var passwordIncludesSpecialChar = prompt("Include special characters? (Y or N", "Y").toUpperCase()
 
 // when prompts are answered;
   // input should be validated and at least one character type should be selected
@@ -44,11 +44,34 @@ function generatePassword () {
 
 // when all prompts answered, generate the password
   for (var index = 0; index < passwordLength; index++) {
-    // if (passwordIncludesLowerCase.toUpperCase() === 'Y'){
-    //   generatedPassword.push(passwordIncludesLowerCase)
-    // }    
+    // all 4 options included
+    if (passwordIncludesLowerCase === 'Y' &&
+      passwordIncludesUpperCase === 'Y' &&
+      passwordIncludesNumbers === 'Y' && 
+      passwordIncludesSpecialChar === 'Y') {
+        var combinedArrays = [...alphabetArray, ...numbersArray, ...specialCharArray]
+        var randomIndex = randomNumber(combinedArrays.length - 1)
+        // random determine if upper or lower case used
+        var toLowerOrUpperCase = randomNumber(2)
+
+        if (randomIndex < 26) { // 26 === alphabet letters
+          if (toLowerOrUpperCase === 1) {
+            generatedPassword.push(combinedArrays[randomIndex].toLowerCase())
+          } else {
+            generatedPassword.push(combinedArrays[randomIndex].toUpperCase())
+          }
+        } else {
+          generatedPassword.push(combinedArrays[randomIndex])
+        }
+      }
+
     
   }
-  // return value and pw should appear on screen
+  // return value for pw to appear
+  generatedPassword = generatedPassword.join("")
   return generatedPassword
+}
+
+function randomNumber (int) {
+  return Math.floor(Math.random() * int + 1)
 }
