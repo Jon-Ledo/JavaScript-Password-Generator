@@ -37,6 +37,15 @@ function writePassword() {
 generateBtn.addEventListener("click", writePassword)
 
 function generatePassword (passwordLength, passwordIncludesLowerCase, passwordIncludesUpperCase, passwordIncludesNumbers, passwordIncludesSpecialChar) {
+  // IF PASSWORD LENGTH TOO LOW OR FALSY
+  if (!passwordLength || passwordLength < 8) {
+    confirm("Password length is too short! Password should be between 8-128 characters. Generate password again")
+    return
+  } else if (passwordLength > 128) {
+    confirm("Password length is too long! Password should be between 8-128 characters. Generate password again")
+    return
+  }
+
   // BUILD THE ARRAY TO PULL VALUES FROM
   var charactersArray = []
   if (passwordIncludesLowerCase) {
@@ -54,7 +63,8 @@ function generatePassword (passwordLength, passwordIncludesLowerCase, passwordIn
 
   // IF ALL VALUES ARE FALSY, RESTART
   if (charactersArray.length < 1) {
-    confirm("Selectors are missing. Please try again")
+    confirm("Selectors are missing. Generate password again and please select your password's parameters")
+    return
   } else {
     for (var i = 0; i < passwordLength; i++) {
       var randomIndex = randomNumber(charactersArray.length - 1)
